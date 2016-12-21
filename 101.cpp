@@ -26,25 +26,47 @@
 class Solution {
 public:
     bool isSymmetric(TreeNode* root) {
-         if (!root) return true;
-            return helper(root->left, root->right);
-        }
+        if (root == NULL)
+            return true;
+            
+        //ShowLevel(root);
         
-        bool helper(TreeNode* p, TreeNode* q) {
-            if (!p && !q) {
-                return true;
-            } else if (!p || !q) {
-                return false;
-            }
+        if (root->left == NULL && root->right == NULL) 
+            return true;
             
-            if (p->val != q->val) {
-                return false;
-            }
-            
-            return helper(p->left,q->right) && helper(p->right, q->left); 
+        if (root->left != NULL && root->right != NULL) {
+            Reverse(root->left);
+            //ShowLevel(root);
+            return isSame(root->left, root->right);
         }
-
+            
+        return false;
+    }
 private:
+    void ShowLevel(TreeNode* root) {
+        queue<TreeNode*> q;
+        q.push(root);
+        while (!q.empty()) {
+            TreeNode* p = q.front();
+            ShowNode(p);
+            q.pop();
+            if (p)
+                EnQueue(&q, p);
+        }
+        printf("\n");
+    }
+    
+    void ShowNode(TreeNode* p) {
+        if (p)
+            printf("%d ", p->val);
+        else
+            printf("null ");
+    }
+    
+    void EnQueue(queue<TreeNode*>* q, TreeNode* root) {
+        q->push(root->left);
+        q->push(root->right);
+    }
     
     void Reverse(TreeNode* a) {
         TreeNode* p = a->left;
@@ -58,6 +80,8 @@ private:
     }
     
     bool isSame(TreeNode* a, TreeNode* b){
+       // ShowLevel(a);
+        //ShowLevel(b);
         if (a->val != b->val)
             return false;
             
