@@ -16,40 +16,52 @@ public:
         vector<vector<int> > result;
         
         map<int, int> num_map;
-        int max = -100000;
-        int min = 100000;
+        vector<int> mins_num;
+        vector<int> pos_num;
         for (int i = 0; i < nums.size(); i ++) {
-            max = nums[i] > max ? nums[i] : max;
-            min = nums[i] < min ? nums[i] : min;
             num_map[nums[i]] += 1;
+            if (nums[i] < 0)
+                mins_num.push_back(nums[i]);
+            else if (nums[i] > 0)
+                pos_num.push_back(nums[i]);
         }
+        
+        sort(mins_num.begin(), mins_num.end());
+        mins_num.erase(unique(mins_num.begin(), mins_num.end()), mins_num.end());
+        
+        sort(pos_num.begin(), pos_num.end());
+        pos_num.erase(unique(pos_num.begin(), pos_num.end()), pos_num.end());
+        
         if (num_map[0] >= 3)
             result.push_back({0,0,0});
-        if (num_map[0] > 0) {
-            for (int i = min; i < 0; i ++) {
-                if (num_map[i] > 0 && num_map[-i] > 0) {
-                    result.push_back({0, i, -i});
-                }
+            
+        if (num_map[0] > 0)
+            for (int i = 0; i < mins_num.size(); i ++) {
+                const int temp = mins_num[i];
+                if (num_map[-temp] > 0)
+                    result.push_back({0, temp, -temp});
             }
-        } 
-        for (int i = min; i < 0; i ++) {
-            if (num_map[i] > 0)
-                for (int j = i; j < 0; j ++) {
-                    if ((j == i && num_map[i] > 1 && num_map[-i-j] > 0)
-                        || (j != i && num_map[j] > 0 && num_map[-i-j] > 0)) {
-                        result.push_back({i, j, -j-i});
-                    }
-                }
+        
+        for (int i = 0; i < mins_num.size(); i ++) {
+            for (int j = i; j < mins_num.size(); j ++) {
+                const int temp_i = mins_num[i];
+                const int temp_j = mins_num[j];
+                if ((i == j && num_map[temp_i] > 1 && num_map[-temp_i-temp_j] > 0)
+                    || (j != i  && num_map[-temp_i-temp_j] > 0))
+                    result.push_back({temp_i, temp_j, -temp_i-temp_j});
+            }
         }
-        for (int i = max; i > 0; i --) {
-            if (num_map[i] > 0)
-                for (int j = i; j > 0; j --) {
-                    if ((j == i && num_map[i] > 1 && num_map[-i-j] > 0)
-                        || (j != i && num_map[j] > 0 && num_map[-i-j] > 0)) {
-                        result.push_back({i, j, -j-i});
-                    }
-                }
+        
+        for (int i = 0; i < pos_num.size(); i ++) {
+            for (int j = i; j < pos_num.size(); j ++) {
+                const int temp_i = pos_num[i];
+                const int temp_j = pos_num[j];
+                if ((j == i && num_map[temp_i] > 1 && num_map[-temp_i-temp_j] > 0)
+                    || (j != i && num_map[-temp_i-temp_j] > 0))
+                    result.push_back({temp_i, temp_j, -temp_i-temp_j});
+            }
         }
+        
         return result;
     }
 };
