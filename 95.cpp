@@ -37,11 +37,6 @@ private:
             res.push_back(NULL);
             return res;
         }
-        //if (start == end) {
-            //TreeNode* p = new TreeNode(start);
-            //res.push_back(p);
-            //return res;
-        //}
         for (int i = start; i <= end; i ++) {
             vector<TreeNode*> left_trees = genTrees(start, i - 1);
             vector<TreeNode*> right_trees = genTrees(i + 1, end);
