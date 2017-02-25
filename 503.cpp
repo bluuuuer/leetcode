@@ -22,7 +22,7 @@ public:
                 s.pop();
             }
             if (i < n) 
-              s.push(i);
+                s.push(i);
         }   
         return next;
     }
