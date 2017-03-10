@@ -14,6 +14,7 @@ Two binary trees are considered equal if they are structurally identical and the
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
+
 class Solution {
 public:
     bool isSameTree(TreeNode* p, TreeNode* q) {
