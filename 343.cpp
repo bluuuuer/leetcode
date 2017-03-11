@@ -19,9 +19,8 @@ private:
         if (res.find(n) != res.end())
             return res[n];
         int max_s = 0;
-        for (int i = 1; i < n; i ++) {
+        for (int i = 1; i < n; i ++)
             max_s = max(max_s, i * max(n - i, intB(n - i)));
-        }
         res[n] = max_s;
         return max_s;
     }
